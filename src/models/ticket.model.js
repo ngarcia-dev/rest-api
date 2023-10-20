@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema(
   {
+    dependencies: {
+      type: String,
+      require: true,
+    },
     title: {
       type: String,
       require: true,

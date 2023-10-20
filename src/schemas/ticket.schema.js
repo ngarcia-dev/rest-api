@@ -1,6 +1,9 @@
 import { z } from "zod";
 
 export const createTicketSchema = z.object({
+  dependencies: z.string({
+    required_error: "Dependencies is required",
+  }),
   title: z.string({
     required_error: "Title is required",
   }),
