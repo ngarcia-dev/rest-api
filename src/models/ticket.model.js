@@ -23,6 +23,12 @@ const ticketSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    receiver: {
+      //* Parameter to get a receiving user
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      require: true,
+    },
   },
   {
     timestamps: true,

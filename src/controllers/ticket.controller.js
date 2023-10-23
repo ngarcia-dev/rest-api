@@ -2,14 +2,11 @@ import Ticket from "../models/ticket.model.js";
 
 export const getTickets = async (req, res) => {
   try {
-    //retorna todos los tickets generados por el user loged
+    //* Return all tickets for user logged in
     const tickets = await Ticket.find({
-      user: req.user.id,
-    }).populate("user");
-
-    /**
-     * TODO: Se podria agregar aqui que pueda ver este ticket el user receiver
-     */
+      //* The $or property was used to display the data if a user exists in the array.
+      $or: [{ user: req.user.id }, { receiver: req.user.id }],
+    }).populate(["user", "receiver"]);
     res.json(tickets);
   } catch (error) {
     return res.status(500).json({ message: "Something went wrog" });
@@ -18,12 +15,14 @@ export const getTickets = async (req, res) => {
 
 export const createTicket = async (req, res) => {
   try {
-    const { dependencies, title, description, date } = req.body;
+    //* Receiver added for create ticket
+    const { dependencies, title, description, date, receiver } = req.body;
     const newTicket = new Ticket({
       dependencies,
       title,
       description,
       date,
+      receiver,
       user: req.user.id,
     });
     const savedTicket = await newTicket.save();
