@@ -4,15 +4,15 @@ const ticketSchema = new mongoose.Schema(
   {
     dependencies: {
       type: String,
-      require: true,
+      required: true,
     },
     title: {
       type: String,
-      require: true,
+      required: true,
     },
     description: {
       type: String,
-      require: true,
+      required: true,
     },
     date: {
       type: Date,
@@ -27,7 +27,7 @@ const ticketSchema = new mongoose.Schema(
       //* Parameter to get a receiving user
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
   },
   {
