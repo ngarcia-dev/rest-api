@@ -8,7 +8,7 @@ export const getTasks = async (req, res) => {
     }).populate("user"); // busca la consulta del usuario y guarde todos sus datos aqui
     res.json(tasks);
   } catch (error) {
-    return res.status(500).json({ messege: "Something went wrog" });
+    return res.status(500).json({ messege: "Something went wrong" });
   }
 };
 
@@ -26,7 +26,7 @@ export const createTask = async (req, res) => {
     const savedTasks = await newTask.save();
     res.json(savedTasks);
   } catch (error) {
-    return res.status(500).json({ messege: "Something went wrog" });
+    return res.status(500).json({ messege: "Something went wrong" });
   }
 };
 

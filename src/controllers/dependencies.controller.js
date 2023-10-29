@@ -5,7 +5,7 @@ export const getDependencies = async (req, res) => {
     const dependencies = await Dependency.find({}).populate("staff");
     res.json(dependencies);
   } catch (error) {
-    return res.status(500).json({ messege: "Something went wrog" });
+    return res.status(500).json({ messege: "Something went wrong" });
   }
 };
 
@@ -22,7 +22,7 @@ export const createDependency = async (req, res) => {
     const savedDependency = await newDependency.save();
     res.json(savedDependency);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrog" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 

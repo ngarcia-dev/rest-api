@@ -9,7 +9,7 @@ export const getTickets = async (req, res) => {
     }).populate(["user", "receiver"]);
     res.json(tickets);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrog" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -28,7 +28,7 @@ export const createTicket = async (req, res) => {
     const savedTicket = await newTicket.save();
     res.json(savedTicket);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrog" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
