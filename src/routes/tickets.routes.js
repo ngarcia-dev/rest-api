@@ -6,7 +6,7 @@ import {
   getTicket,
   getTickets,
   updateTicket,
-} from "../controllers/ticket.controller.js";
+} from "../controllers/tickets.controller.js";
 
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { createTicketSchema } from "../schemas/ticket.schema.js";

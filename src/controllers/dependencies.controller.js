@@ -11,6 +11,7 @@ export const getDependencies = async (req, res) => {
 
 export const createDependency = async (req, res) => {
   try {
+    //TODO: add authorized user to only create dependencies
     const { name, email, date, staff } = req.body;
     const newDependency = new Dependency({
       name,
@@ -40,7 +41,7 @@ export const getDependency = async (req, res) => {
 
 export const deleteDependency = async (req, res) => {
   try {
-    //TODO: add authorized administrator user only remove dependencies
+    //TODO: add authorized user to only remove dependencies
     const dependecy = await Dependency.findByIdAndDelete(req.params.id);
     if (!dependecy)
       return res.status(404).json({ message: "Dependency not found" });
@@ -52,6 +53,7 @@ export const deleteDependency = async (req, res) => {
 
 export const updateDependency = async (req, res) => {
   try {
+    //TODO: add authorized user to only update dependencies
     const dependency = await Dependency.findByIdAndUpdate(
       req.params.id,
       req.body,

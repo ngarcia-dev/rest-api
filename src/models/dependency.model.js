@@ -23,6 +23,7 @@ const dependencySchema = new mongoose.Schema(
         required: true,
       },
     ],
+    //TODO: add a service array
   },
   {
     timestamp: true,
