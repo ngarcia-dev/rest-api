@@ -24,6 +24,13 @@ const dependencySchema = new mongoose.Schema(
       },
     ],
     //TODO: add a service array
+    services: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Service",
+        required: true,
+      },
+    ],
   },
   {
     timestamp: true,

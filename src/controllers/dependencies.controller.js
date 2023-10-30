@@ -2,7 +2,7 @@ import Dependency from "../models/dependency.model.js";
 
 export const getDependencies = async (req, res) => {
   try {
-    const dependencies = await Dependency.find({}).populate("staff");
+    const dependencies = await Dependency.find({}).populate("staff services");
     res.json(dependencies);
   } catch (error) {
     return res.status(500).json({ messege: "Something went wrong" });
@@ -12,12 +12,13 @@ export const getDependencies = async (req, res) => {
 export const createDependency = async (req, res) => {
   try {
     //TODO: add authorized user to only create dependencies
-    const { name, email, date, staff } = req.body;
+    const { name, email, date, staff, services } = req.body;
     const newDependency = new Dependency({
       name,
       email,
       date,
       staff,
+      services,
     });
     const savedDependency = await newDependency.save();
     res.json(savedDependency);
@@ -29,7 +30,7 @@ export const createDependency = async (req, res) => {
 export const getDependency = async (req, res) => {
   try {
     const dependency = await Dependency.findById(req.params.id).populate(
-      "staff"
+      "staff services"
     );
     if (!dependency)
       return res.status(404).json({ message: "Dependency not found" });
