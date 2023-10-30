@@ -2,9 +2,17 @@ import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema(
   {
-    dependencies: {
-      type: String,
-      required: true,
+    dependency: {
+      name: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Dependency",
+        required: true,
+      },
+      service: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Service",
+        required: true,
+      },
     },
     title: {
       type: String,
