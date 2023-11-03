@@ -16,6 +16,13 @@ const dependencySchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    admins: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
     staff: [
       {
         type: mongoose.Schema.Types.ObjectId,
