@@ -6,7 +6,7 @@ export const getTickets = async (req, res) => {
     const tickets = await Ticket.find({
       //* The $or property was used to display the data if a user exists in the array.
       $or: [{ user: req.user.id }, { receiver: req.user.id }],
-    }).populate("user receiver dependency.name dependency.service");
+    }).populate("user receiver destination.dependency destination.service");
     res.json(tickets);
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
@@ -16,10 +16,10 @@ export const getTickets = async (req, res) => {
 export const createTicket = async (req, res) => {
   try {
     //* Receiver added for create ticket
-    const { dependency, title, description, date, receiver } =
+    const { destination, title, description, date, receiver } =
       req.body;
     const newTicket = new Ticket({
-      dependency,
+      destination,
       title,
       description,
       date,
@@ -36,7 +36,7 @@ export const createTicket = async (req, res) => {
 export const getTicket = async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id).populate(
-      "user receiver dependency.name dependency.service"
+      "user receiver destination.dependency destination.service"
     );
     const userId = req.user.id;
     if (!ticket) return res.status(404).json({ message: "Ticket not found" });
