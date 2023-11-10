@@ -1,11 +1,19 @@
 import Ticket from "../models/ticket.model.js";
 
-export const getTickets = async (req, res) => {
+import Dependency from "../models/dependency.model.js";
+export const getTickets = async (req, res, next) => {
   try {
-    //* Return all tickets for user logged in
+    const admin = await Dependency.findOne({
+      admins: req.user.id,
+    });
+    const adminId = admin ? admin._id : null;
+
     const tickets = await Ticket.find({
-      //* The $or property was used to display the data if a user exists in the array.
-      $or: [{ user: req.user.id }, { receiver: req.user.id }],
+      $or: [
+        { user: req.user.id },
+        { receiver: req.user.id },
+        { dependency: adminId },
+      ],
     }).populate("user receiver dependency service", {
       username: true,
       email: true,
@@ -15,7 +23,7 @@ export const getTickets = async (req, res) => {
     });
     res.json(tickets);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json(error.message);
   }
 };
 
