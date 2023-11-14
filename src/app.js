@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
-import tasksRoutes from "./routes/tasks.routes.js";
 import ticketsRoutes from "./routes/tickets.routes.js";
 import dependenciesRoutes from "./routes/dependencies.routes.js";
 import serviceRoutes from "./routes/services.routes.js";
@@ -26,7 +25,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api", authRoutes);
-app.use("/api", tasksRoutes);
 app.use("/api", ticketsRoutes);
 app.use("/api", dependenciesRoutes);
 app.use("/api", serviceRoutes);

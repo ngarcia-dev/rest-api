@@ -7,11 +7,6 @@ export const createDependencySchema = z.object({
   email: z.string({
     required_error: "Email is required",
   }),
-  admins: z.array(
-    z.string({
-      required_error: "Admins is required",
-    })
-  ),
   staff: z.array(
     z.string({
       required_error: "Staff is required",
