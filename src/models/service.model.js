@@ -7,10 +7,6 @@ const serviceSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
     //TODO: add a subService array
   },
   {

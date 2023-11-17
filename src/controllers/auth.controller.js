@@ -1,12 +1,13 @@
 // procesar peticiones
 import User from "../models/user.model.js"; // modelo de usuario
+import Role from "../models/role.model.js";
 import bcrypt from "bcryptjs"; // modulo de encriptacion
 import { createAccessToken } from "../libs/jwt.js"; // token login session
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
 
 export const register = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password, username, roles } = req.body;
 
   try {
     const userFound = await User.findOne({ email });
@@ -20,7 +21,15 @@ export const register = async (req, res) => {
       username,
       email,
       password: passwordHash,
+      roles,
     });
+
+    if (roles) {
+      const foundRoles = await Role.find({ name: { $in: roles } });
+      newUser.roles = foundRoles.map((role) => role._id);
+    }
+    const role = await Role.findOne({ name: "user" });
+    newUser.roles = [role._id];
 
     // crea un usuario y lo guarda en la base de datos
     const userSaved = await newUser.save();
@@ -35,6 +44,7 @@ export const register = async (req, res) => {
       id: userSaved._id,
       username: userSaved.username,
       email: userSaved.email,
+      roles: userSaved.roles,
       createdAt: userSaved.createdAt,
       updatedAt: userSaved.updatedAt,
     });
@@ -69,6 +79,7 @@ export const login = async (req, res) => {
       id: userFound._id,
       username: userFound.username,
       email: userFound.email,
+      roles: userFound.roles,
       createdAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
     });
@@ -87,7 +98,7 @@ export const logout = (req, res) => {
 
 // consulta basica
 export const profile = async (req, res) => {
-  const userFound = await User.findById(req.user.id);
+  const userFound = await User.findById(req.user.id).populate("roles");
 
   if (!userFound) return res.status(400).json({ message: "User not found" });
 
@@ -95,6 +106,7 @@ export const profile = async (req, res) => {
     id: userFound._id,
     username: userFound.username,
     email: userFound.email,
+    roles: userFound.roles,
     createdAt: userFound.createdAt,
     updatedAt: userFound.updatedAt,
   });
