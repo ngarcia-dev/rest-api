@@ -1,10 +1,24 @@
 import Ticket from "../models/ticket.model.js";
+import Dependency from "../models/dependency.model.js";
 
 export const createTicket = async (req, res) => {
   try {
-    //* Receiver added for create ticket
     const { title, description, date, dependency, service, receiver } =
       req.body;
+
+    const dependencyExists = await Dependency.findById(dependency);
+    if (!dependencyExists)
+      return res.status(404).json({ message: "Dependency not found" });
+
+    const serviceBelongs = dependencyExists.services.some((servicio) =>
+      servicio.equals(service)
+    );
+
+    if (!serviceBelongs)
+      return res.status(404).json({
+        message: "The service does not belong to the selected dependency",
+      });
+
     const newTicket = new Ticket({
       title,
       description,
@@ -17,14 +31,23 @@ export const createTicket = async (req, res) => {
     const savedTicket = await newTicket.save();
     res.json(savedTicket);
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+    return res.status(500).json(error.message);
   }
 };
 
 export const getTickets = async (req, res, next) => {
   try {
+    const staff = await Dependency.findOne({
+      staff: req.user.id,
+    });
+    const staffId = staff ? staff._id : null;
+    
     const tickets = await Ticket.find({
-      user: req.user.id,
+      $or: [
+        { user: req.user.id },
+        { receiver: req.user.id },
+        { dependency: staffId},
+      ],
     }).populate("user receiver dependency service");
     res.json(tickets);
   } catch (error) {
