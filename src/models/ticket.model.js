@@ -30,10 +30,9 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     receiver: {
-      //* Parameter to get a receiving user
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      default: null,
     },
   },
   {
