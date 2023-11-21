@@ -8,11 +8,12 @@ import ticketsRoutes from "./routes/tickets.routes.js";
 import dependenciesRoutes from "./routes/dependencies.routes.js";
 import serviceRoutes from "./routes/services.routes.js";
 
-import { createRoles, createServices } from "./libs/initialSetup.js";
+import { createRoles, createServices, createState } from "./libs/initialSetup.js";
 
 const app = express();
 createRoles();
 createServices();
+createState();
 
 const whitlist = ["http://localhost:5173", "http://192.168.1.35:5173"];
 
