@@ -14,12 +14,6 @@ export const createTicket = async (req, res) => {
       status,
     } = req.body;
 
-    if (!["low", "medium", "high"].includes(priority))
-      return res.status(400).json({ error: "The given priority is not valid" });
-
-    if (!["pending", "approved", "rejected", "returned", "finished"].includes(status))
-      return res.status(400).json({ error: "The given status is not valid" });
-
     const dependencyExists = await Dependency.findById(dependency);
 
     const serviceBelongs = dependencyExists.services.some((servicio) =>
@@ -49,7 +43,7 @@ export const createTicket = async (req, res) => {
   }
 };
 
-export const getTickets = async (req, res, next) => {
+export const getTickets = async (req, res) => {
   try {
     const staff = await Dependency.findOne({
       staff: req.user.id,
