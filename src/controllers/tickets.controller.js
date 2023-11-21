@@ -3,12 +3,24 @@ import Dependency from "../models/dependency.model.js";
 
 export const createTicket = async (req, res) => {
   try {
-    const { title, description, date, dependency, service, receiver } =
-      req.body;
+    const {
+      title,
+      description,
+      date,
+      dependency,
+      service,
+      receiver,
+      priority,
+      status,
+    } = req.body;
+
+    if (!["low", "medium", "high"].includes(priority))
+      return res.status(400).json({ error: "The given priority is not valid" });
+
+    if (!["pending", "approved", "rejected", "returned", "finished"].includes(status))
+      return res.status(400).json({ error: "The given status is not valid" });
 
     const dependencyExists = await Dependency.findById(dependency);
-    if (!dependencyExists)
-      return res.status(404).json({ message: "Dependency not found" });
 
     const serviceBelongs = dependencyExists.services.some((servicio) =>
       servicio.equals(service)
@@ -26,12 +38,14 @@ export const createTicket = async (req, res) => {
       dependency,
       service,
       receiver,
+      priority,
+      status,
       user: req.user.id,
     });
     const savedTicket = await newTicket.save();
     res.json(savedTicket);
   } catch (error) {
-    return res.status(500).json(error.message);
+    return res.status(500).json({ message: "Dependency not found" });
   }
 };
 
@@ -41,12 +55,12 @@ export const getTickets = async (req, res, next) => {
       staff: req.user.id,
     });
     const staffId = staff ? staff._id : null;
-    
+
     const tickets = await Ticket.find({
       $or: [
         { user: req.user.id },
         { receiver: req.user.id },
-        { dependency: staffId},
+        { dependency: staffId },
       ],
     }).populate("user receiver dependency service");
     res.json(tickets);

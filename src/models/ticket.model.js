@@ -34,6 +34,16 @@ const ticketSchema = new mongoose.Schema(
       ref: "User",
       default: null,
     },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "low",
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected", "returned", "finished"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,
