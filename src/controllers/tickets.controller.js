@@ -39,7 +39,7 @@ export const createTicket = async (req, res) => {
     const savedTicket = await newTicket.save();
     res.json(savedTicket);
   } catch (error) {
-    return res.status(500).json({ message: "Dependency not found" });
+    return res.status(500).json(error.message);
   }
 };
 
@@ -77,16 +77,16 @@ export const getTicket = async (req, res) => {
 
 export const updateTicket = async (req, res) => {
   try {
-    const updateTicket = await Ticket.findByIdAndUpdate(
+    const ticket = await Ticket.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
         new: true,
       }
     );
-    if (!updateTicket)
+    if (!ticket)
       return res.status(404).json({ message: "Ticket not found" });
-    res.json(updateTicket);
+    res.json(ticket);
   } catch (error) {
     return res.status(404).json({ messege: "Ticket not found" });
   }
