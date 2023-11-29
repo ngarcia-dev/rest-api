@@ -98,20 +98,15 @@ export const logout = (req, res) => {
 
 // consulta basica
 export const profile = async (req, res) => {
-  const userFound = await User.findById(req.user.id).populate("roles");
+  try {
+    const userFound = await User.findById(req.user.id).populate("roles");
 
-  if (!userFound) return res.status(400).json({ message: "User not found" });
+    if (!userFound) return res.status(400).json({ message: "User not found" });
 
-  return res.json({
-    id: userFound._id,
-    username: userFound.username,
-    email: userFound.email,
-    roles: userFound.roles,
-    createdAt: userFound.createdAt,
-    updatedAt: userFound.updatedAt,
-  });
-
-  res.send("profile");
+    return res.json(userFound);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
 };
 
 export const verifyToken = async (req, res) => {
